@@ -62,9 +62,19 @@
   <a class="buy-btn" href="https://pump.fun/29QvRFByyr1YNnx3CcYL1B1oWnh86EXF76CtATT5" target="_blank">Buy $4MIN</a>
 
   <section>
-    <h2>Meme Generator (Coming Soon)</h2>
-    <p>Type your meme idea. Click generate. Float with it.</p>
-  </section>
+  <h2>Meme Generator</h2>
+  <p>Type your meme idea, float forever.</p>
+
+  <input type="text" id="memeText" placeholder="e.g. Still floating in 2025..." style="margin-top:10px; padding:10px; width:80%; font-family:inherit;">
+  <br><br>
+  <button onclick="generateMeme()" style="padding:10px 20px; font-family:inherit;">Generate Meme</button>
+
+  <br><br>
+  <canvas id="memeCanvas" width="500" height="500" style="max-width:100%; border:2px solid #00ffcc; background:#222;"></canvas>
+
+  <br>
+  <a id="downloadLink" download="meme.png" style="display:none; color:#00ffcc; text-decoration:underline;">Download Meme</a>
+</section>
 
   <section>
     <h2>Roadmap</h2>
@@ -90,6 +100,45 @@
   <div class="footer">
     Built by degens. Floating by faith.
   </div>
+<script>
+  const canvas = document.getElementById("memeCanvas");
+  const ctx = canvas.getContext("2d");
+  const downloadLink = document.getElementById("downloadLink");
 
+  const backgrounds = [
+    "https://i.imgur.com/Q6aZzZa.jpeg",
+    "https://i.imgur.com/OH7dt9M.jpeg",
+    "https://i.imgur.com/4AiXzf8.jpeg"
+  ];
+
+  function generateMeme() {
+    const text = document.getElementById("memeText").value;
+    const bg = new Image();
+    const bgUrl = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+    bg.crossOrigin = "anonymous";
+    bg.src = bgUrl;
+
+    bg.onload = function() {
+      canvas.width = bg.width;
+      canvas.height = bg.height;
+      ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+
+      ctx.font = "28px 'Press Start 2P', cursive";
+      ctx.fillStyle = "#fff";
+      ctx.strokeStyle = "#000";
+      ctx.lineWidth = 2;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+
+      ctx.strokeText(text, canvas.width / 2, canvas.height - 30);
+      ctx.fillText(text, canvas.width / 2, canvas.height - 30);
+
+      // Enable download link
+      downloadLink.href = canvas.toDataURL("image/png");
+      downloadLink.style.display = "inline-block";
+    };
+  }
+</script>
+  
 </body>
 </html>
